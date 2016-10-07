@@ -4,14 +4,15 @@ using System;
 using System.IO;
 using Google.Apis.Customsearch.v1.Data;
 using Google.Apis.Customsearch.v1;
+using Newtonsoft.Json;
 
 namespace MisakiChan
 {
 
     public class MisakiBot
     {
-        private string DiscordAPI = "MjMzNzQ3NDIxNTAxMzI1MzEy.CtiLIA.nZDPPRCOkLEpuJtTwRvoe86nzFY";
-        private string GoogleAPI = "AIzaSyA71-cLSBJ3CYi06nEff6IDWVKr0KjJAHE";
+        private string DiscordAPI;
+        private string GoogleAPI;
         private string pokemonSearchEngID = "014488993494222492713:ivwpsosfc2w";
         public DiscordClient discord;
         public CommandService commands;
@@ -22,9 +23,31 @@ namespace MisakiChan
         public string googleSearchQuery;
         public string firstLink;
         public string firstImage;
+        public string Credentials;
+                    //Class for obtaining JSON info. 
+        public class Keys
+        {
+            public string Token { get; set; }
+            public string GoogleAPIKey { get; set; }
+        }
+                    //Reading from JSON.
+        public void readCredentials()
+        {
+            using (StreamReader r = new StreamReader("Credentials.json"))
+            {
+                Credentials = r.ReadToEnd();
+                Keys k = JsonConvert.DeserializeObject<Keys>(Credentials);
+                DiscordAPI = k.Token;
+                GoogleAPI = k.GoogleAPIKey;
+                Console.WriteLine("DISCORD TOKEN: " + k.Token);
+                Console.WriteLine("GOOGLE API TOKEN: " + k.GoogleAPIKey);
+            }
+        }
 
         public MisakiBot()
         {                                       /* Defining our variables! (ノ*ﾟ▽ﾟ*) */
+            readCredentials();
+
             discord = new DiscordClient(x =>
             {
                 x.LogLevel = LogSeverity.Info;
@@ -41,7 +64,7 @@ namespace MisakiChan
             commands = discord.GetService<CommandService>();
 
             commandStart();
-
+                    //Loading screen, lol.
             int lBuffer = 1;
             Console.Write("Working....");
             while (lBuffer < 30000)
@@ -49,16 +72,19 @@ namespace MisakiChan
                 spin.Turn();
                 lBuffer++;
             }
+
             Console.WriteLine("!");
 
             Console.WriteLine("Good morning!");
 
+            
+                    //Starting bot.
             discord.ExecuteAndWait(async () =>
             {
                 await discord.Connect(DiscordAPI, TokenType.Bot);
             });
         }
-
+        
         public void commandStart()
         {           //POKEMON COMMAND
             commands.CreateCommand("pkmn")
@@ -83,14 +109,11 @@ namespace MisakiChan
                             //Brian McCool is a real ass motherfucker, and don't you ever forget that.
                             Console.WriteLine("Pokemon found.");
                             firstLink = ("🌸 " + pokemonToPost + ": " + item.Link + " 🌸");
-                            //firstImage = (item.Image.ThumbnailLink);
                             break;
                         }
                     }
                     await e.Channel.SendMessage(firstLink);
                     Console.WriteLine("Pokemon link sent successfully.");
-                    //await e.Channel.SendFile(firstImage);
-                    //Console.WriteLine("Pokemon image sent successfully.");
                 });
 
                     //IMPLYING COMMAND
