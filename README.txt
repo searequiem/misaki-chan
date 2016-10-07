@@ -5,5 +5,5 @@ I do fun things on Discord!  (⁄ ⁄•⁄ω⁄•⁄ ⁄)
 
 Commands: 
   >pkmn - Displays a random Pokémon's information.
-  >purge(#) - Deletes messages. 
+  >purge # - Deletes # of messages. 
   >implying - Implications.
