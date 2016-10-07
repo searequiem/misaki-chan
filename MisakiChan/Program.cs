@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MisakiChan
 {
-    class Program
+    class GoogleTest
     {
         static void Main(string[] args)
         {
