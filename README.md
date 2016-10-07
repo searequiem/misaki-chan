@@ -1,4 +1,7 @@
 # misaki-chan
 I do fun things on Discord!  (⁄ ⁄•⁄ω⁄•⁄ ⁄)
 
-Nothing here..... yet. (￣▽￣*)ゞ
+(￣▽￣*)ゞ
+
+Commands: 
+  >pkmn - Displays a random Pokémon.
